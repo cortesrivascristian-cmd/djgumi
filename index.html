@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DJ GUMI — House & Techno</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #080808;
+      --deep: #0d0d0d;
+      --surface: #111111;
+      --card: #161616;
+      --magenta: #e000a0;
+      --magenta-dim: #a0006e;
+      --magenta-glow: rgba(224, 0, 160, 0.25);
+      --white: #f0f0f0;
+      --grey: #555;
+      --light-grey: #888;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 3rem;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+      backdrop-filter: blur(2px);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.15em;
+      color: var(--magenta);
+      text-decoration: none;
+    }
+
+    .nav-cta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--magenta);
+      border: none;
+      padding: 0.65rem 1.4rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .nav-cta:hover { background: #ff00be; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 3rem 5rem;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--black);
+      z-index: 0;
+    }
+
+    /* Animated grid lines */
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(224,0,160,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(224,0,160,0.07) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: grid-drift 20s linear infinite;
+    }
+
+    @keyframes grid-drift {
+      0% { background-position: 0 0; }
+      100% { background-position: 60px 60px; }
+    }
+
+    /* Radial glow */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80vw;
+      height: 80vw;
+      background: radial-gradient(ellipse at center, rgba(224,0,160,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Scanlines */
+    .scanlines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 16vw, 14rem);
+      line-height: 0.88;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      opacity: 0;
+      animation: fade-up 0.8s 0.5s forwards;
+    }
+
+    .hero-title span {
+      color: var(--magenta);
+      display: block;
+    }
+
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--light-grey);
+      opacity: 0;
+      animation: fade-up 0.8s 0.7s forwards;
+    }
+
+    .hero-sub em {
+      color: var(--magenta);
+      font-style: normal;
+    }
+
+    .hero-actions {
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.9s forwards;
+    }
+
+    .btn-primary {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--magenta);
+      border: none;
+      padding: 1rem 2.2rem;
+      cursor: pointer;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.15);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-primary:hover::after { transform: scaleX(1); }
+
+    .hero-scroll {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 6rem 3rem; }
+
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      background: var(--magenta);
+      padding: 0.9rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-block;
+      animation: marquee 18s linear infinite;
+    }
+
+    .marquee-track span {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.2em;
+      color: var(--black);
+      padding: 0 2rem;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--deep);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-visual {
+      position: relative;
+      height: 420px;
+    }
+
+    .about-box {
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--magenta-dim);
+      background: var(--card);
+    }
+
+    .about-box::before {
+      content: 'DJ GUMI';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 6rem;
+      color: rgba(224,0,160,0.06);
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .about-pulse {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 100px;
+    }
+
+    .about-pulse::before,
+    .about-pulse::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid var(--magenta);
+      animation: pulse-ring 2s ease-out infinite;
+    }
+
+    .about-pulse::after { animation-delay: 1s; }
+
+    .pulse-center {
+      position: absolute;
+      inset: 30px;
+      border-radius: 50%;
+      background: var(--magenta);
+      box-shadow: 0 0 40px var(--magenta-glow);
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(0.5); opacity: 1; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    .about-text p {
+      font-size: 0.9rem;
+      line-height: 1.85;
+      color: var(--light-grey);
+      margin-top: 1.5rem;
+    }
+
+    .about-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      color: var(--magenta);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-top: 0.3rem;
+    }
+
+    /* ── SERVICES ── */
+    #services {
+      background: var(--black);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .service-card {
+      background: var(--card);
+      border: 1px solid #1e1e1e;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.2s;
+      cursor: default;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--magenta);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+
+    .service-card:hover {
+      border-color: var(--magenta-dim);
+      transform: translateY(-4px);
+    }
+
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-icon {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .service-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.8rem;
+    }
+
+    .service-desc {
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: var(--light-grey);
+    }
+
+    .service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .tag {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: 1px solid var(--magenta-dim);
+      color: var(--magenta);
+      padding: 0.3rem 0.7rem;
+    }
+
+    /* ── BOOKING ── */
+    #booking {
+      background: var(--deep);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #booking::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 60vw;
+      height: 60vw;
+      background: radial-gradient(ellipse, rgba(224,0,160,0.1) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .booking-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+    }
+
+    .booking-inner .section-title { margin-bottom: 0.5rem; }
+
+    .booking-sub {
+      font-size: 0.75rem;
+      color: var(--light-grey);
+      letter-spacing: 0.1em;
+      margin-bottom: 3rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--light-grey);
+    }
+
+    input, select, textarea {
+      background: var(--card);
+      border: 1px solid #222;
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--magenta);
+      box-shadow: 0 0 0 3px var(--magenta-glow);
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23e000a0'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      cursor: pointer;
+    }
+
+    select option { background: var(--card); }
+
+    textarea { resize: vertical; min-height: 120px; }
+
+    .form-submit {
+      margin-top: 2rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--magenta);
+      border: none;
+      padding: 1.1rem 2.5rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s, background 0.2s;
+    }
+
+    .form-submit:hover { background: #ff00be; transform: translateY(-2px); }
+
+    .form-submit:active { transform: translateY(0); }
+
+    .form-note {
+      font-size: 0.6rem;
+      color: var(--grey);
+      margin-top: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* Success message */
+    .success-msg {
+      display: none;
+      background: rgba(224,0,160,0.1);
+      border: 1px solid var(--magenta-dim);
+      padding: 1.2rem 1.5rem;
+      font-size: 0.75rem;
+      color: var(--magenta);
+      letter-spacing: 0.1em;
+      margin-top: 1.5rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid #1a1a1a;
+      padding: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--magenta);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-socials a {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--grey);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-socials a:hover { color: var(--magenta); }
+
+    .footer-copy {
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      color: var(--grey);
+      text-transform: uppercase;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      section { padding: 4rem 1.5rem; }
+      #hero { padding: 0 1.5rem 4rem; }
+      #about { grid-template-columns: 1fr; }
+      .about-visual { height: 260px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#hero">DJ GUMI</a>
+    <a class="nav-cta" href="#booking">Book Now</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="scanlines"></div>
+    <div class="hero-content">
+      <p class="hero-tag">// Melbourne's Premier House & Techno DJ</p>
+      <h1 class="hero-title">DJ<span>GUMI</span></h1>
+      <p class="hero-sub">
+        <em>House &amp; Techno</em> &nbsp;·&nbsp; Club Nights &nbsp;·&nbsp; Private Parties
+      </p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#booking">Book DJ Gumi</a>
+        <span class="hero-scroll">↓ Scroll</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track">
+      <span>HOUSE</span><span>·</span>
+      <span>TECHNO</span><span>·</span>
+      <span>CLUB NIGHTS</span><span>·</span>
+      <span>PRIVATE PARTIES</span><span>·</span>
+      <span>DJ GUMI</span><span>·</span>
+      <span>HOUSE</span><span>·</span>
+      <span>TECHNO</span><span>·</span>
+      <span>CLUB NIGHTS</span><span>·</span>
+      <span>PRIVATE PARTIES</span><span>·</span>
+      <span>DJ GUMI</span><span>·</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-visual">
+      <div class="about-box"></div>
+      <div class="about-pulse">
+        <div class="pulse-center"></div>
+      </div>
+    </div>
+    <div class="about-text">
+      <p class="section-label">// About</p>
+      <h2 class="section-title">Raw Energy.<br>Precision Mixing.</h2>
+      <p>DJ Gumi brings raw energy and precision mixing to every set — from underground club nights to private parties that don't stop until sunrise. With a deep-rooted passion for House &amp; Techno, every performance is an experience you won't forget.</p>
+      <div class="about-stats">
+        <div>
+          <div class="stat-num">5+</div>
+          <div class="stat-label">Years Active</div>
+        </div>
+        <div>
+          <div class="stat-num">200+</div>
+          <div class="stat-label">Events Played</div>
+        </div>
+        <div>
+          <div class="stat-num">∞</div>
+          <div class="stat-label">BPM in the Tank</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE 2 (reverse) -->
+  <div class="marquee-wrap" aria-hidden="true" style="background: #0d0d0d; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a;">
+    <div class="marquee-track" style="animation-direction: reverse; animation-duration: 22s;">
+      <span style="color: var(--magenta);">BOOK NOW</span><span style="color: #333;">——</span>
+      <span style="color: var(--magenta);">BOOK NOW</span><span style="color: #333;">——</span>
+      <span style="color: var(--magenta);">BOOK NOW</span><span style="color: #333;">——</span>
+      <span style="color: var(--magenta);">BOOK NOW</span><span style="color: #333;">——</span>
+      <span style="color: var(--magenta);">BOOK NOW</span><span style="color: #333;">——</span>
+      <span style="color: var(--magenta);">BOOK NOW</span><span style="color: #333;">——</span>
+      <span style="color: var(--magenta);">BOOK NOW</span><span style="color: #333;">——</span>
+      <span style="color: var(--magenta);">BOOK NOW</span><span style="color: #333;">——</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <p class="section-label">// Services</p>
+    <h2 class="section-title">What I Do</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🎛</div>
+        <div class="service-name">Club Nights</div>
+        <p class="service-desc">High-energy sets built for the dancefloor. From opening grooves to peak-hour mayhem, Gumi reads the room and delivers a journey built around deep, driving House and relentless Techno.</p>
+        <div class="service-tags">
+          <span class="tag">Resident Sets</span>
+          <span class="tag">Guest Slots</span>
+          <span class="tag">All Night Long</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎉</div>
+        <div class="service-name">Private Parties</div>
+        <p class="service-desc">Tailored experiences for unforgettable nights. Whether it's a rooftop gathering or an intimate basement affair, every private set is customised to match your vibe and keep the energy high.</p>
+        <div class="service-tags">
+          <span class="tag">Birthdays</span>
+          <span class="tag">Exclusive Events</span>
+          <span class="tag">Custom Sets</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING -->
+  <section id="booking">
+    <div class="booking-inner">
+      <p class="section-label">// Bookings</p>
+      <h2 class="section-title">Book DJ Gumi</h2>
+      <p class="booking-sub">Fill in the form below and we'll get back to you within 24 hours.</p>
+
+      <form id="bookingForm" onsubmit="handleSubmit(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="you@email.com" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="+61 4XX XXX XXX" />
+          </div>
+          <div class="form-group">
+            <label for="event-type">Event Type</label>
+            <select id="event-type" name="event-type" required>
+              <option value="" disabled selected>Select event type</option>
+              <option value="club">Club Night</option>
+              <option value="private">Private Party</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="date">Event Date</label>
+            <input type="date" id="date" name="date" required />
+          </div>
+          <div class="form-group">
+            <label for="location">Venue / Location</label>
+            <input type="text" id="location" name="location" placeholder="Venue name or suburb" />
+          </div>
+          <div class="form-group full">
+            <label for="message">Tell Me More</label>
+            <textarea id="message" name="message" placeholder="Set duration, vibe, any special requirements..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="form-submit">Send Booking Request →</button>
+        <p class="form-note">* All enquiries are responded to within 24 hours.</p>
+        <div class="success-msg" id="successMsg">
+          ✓ &nbsp;Your request has been sent! DJ Gumi will be in touch within 24 hours.
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">DJ GUMI</div>
+    <div class="footer-socials">
+      <a href="#" aria-label="Instagram">Instagram</a>
+      <a href="#" aria-label="SoundCloud">SoundCloud</a>
+      <a href="#booking">Book Now</a>
+    </div>
+    <div class="footer-copy">© 2026 DJ Gumi · All rights reserved</div>
+  </footer>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.querySelector('.form-submit');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      setTimeout(() => {
+        document.getElementById('bookingForm').reset();
+        document.getElementById('successMsg').style.display = 'block';
+        btn.textContent = 'Send Booking Request →';
+        btn.disabled = false;
+      }, 1200);
+    }
+  </script>
+
+</body>
+</html>
